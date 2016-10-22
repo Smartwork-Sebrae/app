@@ -80,7 +80,7 @@ angular.module('starter.controllers', [])
       reinicio();
     }
   }
-  
+    
   var centesimas = 0;
   var segundos = 0;
   var minutos = 0;
