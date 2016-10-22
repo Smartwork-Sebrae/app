@@ -1,5 +1,13 @@
-<ion-view view-title="Search">
+<ion-view view-title="Cronometro">
   <ion-content>
-    <h1>Search</h1>
+  	<h1 align="center">Mesa 1</h1>
+  	<div align="center">
+  		<button class="Mybutton" ng-click="contar()" ng-model="botao" id="botao">{{msg}}</button>	
+  	</div>
+  	<div align="center" class="divRelogio">
+  		<span class="reloj" id="Minutos">00</span>
+		<span class="reloj" id="Segundos">:00</span>
+		<span class="reloj" id="Centesimas">:00</span>	
+  	</div>
   </ion-content>
 </ion-view>

@@ -42,14 +42,97 @@ angular.module('starter.controllers', [])
 })
 
 .controller('PlaylistsCtrl', function($scope) {
-  $scope.playlists = [
-    { title: 'Reggae', id: 1 },
-    { title: 'Chill', id: 2 },
-    { title: 'Dubstep', id: 3 },
-    { title: 'Indie', id: 4 },
-    { title: 'Rap', id: 5 },
-    { title: 'Cowbell', id: 6 }
-  ];
+
+})
+
+.controller('Mesa', function($scope) {
+
+  var numMesas = [];
+
+  for (var i = 0; i <= 20; i++) {
+    numMesas[i] = i+1;
+  }
+
+  $scope.mesas = numMesas;
+
+})
+
+.controller('Cronometro', function($scope) {
+  var cont = true;
+  $scope.msg = "Iniciar produção";
+  var botao = document.getElementById('botao');
+
+  $scope.contar = function () {
+    if(cont){
+      cont = !cont;
+      $scope.msg = "Parar Produção";
+      botao.style.backgroundColor =  "#af504c";
+      botao.style.boxShadow = "0 5px #666";
+      botao.style.transform = "translateY(4px)";
+      inicio ();
+      
+    } else {
+      cont = !cont;
+      $scope.msg = "Iniciar Produção";
+      botao.style.backgroundColor =  "#4CAF50";
+      botao.style.boxShadow = "0 9px #999";
+      botao.style.transform = "translateY(0px)";
+      reinicio();
+    }
+  }
+  
+  var centesimas = 0;
+  var segundos = 0;
+  var minutos = 0;
+  var horas = 0;
+
+  function inicio(){
+    control = setInterval(cronometro,10);
+  }
+
+  function reinicio () {
+    clearInterval(control);
+    centesimas = 0;
+    segundos = 0;
+    minutos = 0;
+    horas = 0;
+    Centesimas.innerHTML = ":00";
+    Segundos.innerHTML = ":00";
+    Minutos.innerHTML = "00";
+  }
+
+  function cronometro () {
+    if (centesimas < 99) {
+      centesimas++;
+      if (centesimas < 10) { centesimas = "0"+centesimas }
+      Centesimas.innerHTML = ":"+centesimas;
+    }
+    if (centesimas == 99) {
+      centesimas = -1;
+    }
+    if (centesimas == 0) {
+      segundos ++;
+      if (segundos < 10) { segundos = "0"+segundos }
+      Segundos.innerHTML = ":"+segundos;
+    }
+    if (segundos == 59) {
+      segundos = -1;
+    }
+    if ( (centesimas == 0)&&(segundos == 0) ) {
+      minutos++;
+      if (minutos < 10) { minutos = "0"+minutos }
+      Minutos.innerHTML = ":"+minutos;
+    }
+    if (minutos == 59) {
+      minutos = -1;
+    }
+    if ( (centesimas == 0)&&(segundos == 0)&&(minutos == 0) ) {
+      horas ++;
+      if (horas < 10) { horas = "0"+horas }
+      Horas.innerHTML = horas;
+    }
+  }
+
 })
 
 .controller('PlaylistCtrl', function($scope, $stateParams) {

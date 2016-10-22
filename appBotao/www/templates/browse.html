@@ -1,5 +1,11 @@
-<ion-view view-title="Browse">
-  <ion-content>
-    <h1>Browse</h1>
-  </ion-content>
+<ion-view view-title="SmartWork">
+  	<ion-content>
+  		<h1 align="center">Minha mesa</h1>
+	    <ion-list ng-repeat="mesa in mesas">
+		  <ion-radio ng-model="choice" ng-value="'A'">{{mesa}}</ion-radio>
+		</ion-list>
+  	</ion-content>
+  	<div class="bar bar-footer bar-positive pointer">
+	  	<div class="title removeLink"><a href="#/app/search">Iniciar produção</a></div>
+	</div>
 </ion-view>
