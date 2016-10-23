@@ -6,7 +6,7 @@ angular.module('myApp', ['angularMoment'])
             method: 'GET',
             url: 'http://smartwork-web.herokuapp.com/api/dashboard/'
         }).
-        then(function successCallback(response) { // começe a ler daqui
+        then(function successCallback(response) {
             $scope.retorno = response.data;
             
             for(var i = 0; i < response.data.desks.length; i++){
@@ -30,51 +30,15 @@ angular.module('myApp', ['angularMoment'])
 })
 
 
-.controller('CtrlResultados', function ($scope) {
-    var result = {
-        "histories": [
-            49,
-            66,
-            88,
-            135,
-            136,
-            170,
-            210,
-            225,
-            262,
-            295,
-            325,
-            331,
-            370
-        ],
-        "item": "Cade Bray",
-        "deadline": 20,
-        "pk": 4,
-        "daily_goals": [
-            25,
-            50,
-            75,
-            100,
-            125,
-            150,
-            175,
-            200,
-            225,
-            250,
-            275,
-            300,
-            325,
-            350,
-            375,
-            400,
-            425,
-            450,
-            475,
-            500
-        ],
-        "quantity": 500
-    }
-    new Chart(document.getElementById("line_chart").getContext("2d"), getChartJs('line'));
+.controller('CtrlResultados', function ($scope, $http) {
+    $http({
+        method: 'GET',
+        url: 'http://smartwork-web.herokuapp.com/api/history/order/1/productivity/'
+    }).
+    then(function successCallback(response) { 
+        result= response.data;
+        new Chart(document.getElementById("line_chart").getContext("2d"), getChartJs('line'));
+    });
 
     //Criar as labels do gráfico
     function dividirDias(prazo){
@@ -108,13 +72,13 @@ angular.module('myApp', ['angularMoment'])
                 labels: dividirDias(result.deadline),
                 datasets: [{
                     label: "Resultado Esperado",
-                    data: result.daily_goals,
+                    data: result.histories,
                     borderColor: 'rgba(0, 188, 212, 0.75)',
                     backgroundColor: 'rgba(0, 188, 212, 0.3)',
                     pointBorderColor: 'rgba(0, 188, 212, 0)',
                     pointBackgroundColor: 'rgba(0, 188, 212, 0.9)',
                     pointBorderWidth: 1
-                }, {
+                }, /*{
                     label: "Resultado Alcançado",
                     data: result.histories,
                     borderColor: 'rgba(233, 30, 99, 0.75)',
@@ -122,7 +86,7 @@ angular.module('myApp', ['angularMoment'])
                     pointBorderColor: 'rgba(233, 30, 99, 0)',
                     pointBackgroundColor: 'rgba(233, 30, 99, 0.9)',
                     pointBorderWidth: 1
-                    },
+                    },*/
                     {
                     label: "Resultado Médio",
                     data: calcularProducaoMedia(result.deadline, result.quantity),
