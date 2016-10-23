@@ -33,10 +33,13 @@ angular.module('myApp', ['angularMoment'])
 .controller('CtrlResultados', function ($scope, $http) {
     $http({
         method: 'GET',
-        url: 'http://smartwork-web.herokuapp.com/api/history/order/1/productivity/'
+        url: 'http://smartwork-web.herokuapp.com/history/api/order/1/productivity/'
     }).
     then(function successCallback(response) { 
         result= response.data;
+        $scope.diasRestantes = result.deadline - result.histories.length;
+        $scope.totalProduzido = result.histories[result.histories.length-1];
+        $scope.restante = result.quantity - $scope.totalProduzido;
         new Chart(document.getElementById("line_chart").getContext("2d"), getChartJs('line'));
     });
 
@@ -50,17 +53,24 @@ angular.module('myApp', ['angularMoment'])
     }
 
     //calcula o mínimo que pode ser feito por dia, para que seja entregue no prazo correto
-    function calcularProducaoMedia(prazo, total) {
+    function calcularProducaoMedia(prazo, total, historico) {
         var prod = [];
-        var prodDia = total/prazo;
-        for (var i = 0; i < prazo; i++) {
-            if(i == 0){
-                prod[i] = prodDia;
-            } else{
-                prod[i] = prod[i-1] + prodDia;
+        for (var i = 0; i < historico.length; i++) {
+            restante = total - historico[i];
+            if(restante > 0){
+                prod[i+1] =  restante/(prazo-i);
             }
         }
         return prod;
+    }
+
+    // retorna o valor diário produzido
+    function parser(historico) {
+        for (var i = 0; i < historico.length; i++) {
+            if(i != 0)
+                historico[i] = historico[i] - historico[i-1] ;
+        }
+        return historico;
     }
 
     // Gera o gráfico
@@ -71,25 +81,16 @@ angular.module('myApp', ['angularMoment'])
             data: {
                 labels: dividirDias(result.deadline),
                 datasets: [{
-                    label: "Resultado Esperado",
-                    data: result.histories,
+                    label: "Resultado Produzido",
+                    data: parser(result.histories),
                     borderColor: 'rgba(0, 188, 212, 0.75)',
                     backgroundColor: 'rgba(0, 188, 212, 0.3)',
                     pointBorderColor: 'rgba(0, 188, 212, 0)',
                     pointBackgroundColor: 'rgba(0, 188, 212, 0.9)',
                     pointBorderWidth: 1
-                }, /*{
-                    label: "Resultado Alcançado",
-                    data: result.histories,
-                    borderColor: 'rgba(233, 30, 99, 0.75)',
-                    backgroundColor: 'rgba(233, 30, 99, 0.3)',
-                    pointBorderColor: 'rgba(233, 30, 99, 0)',
-                    pointBackgroundColor: 'rgba(233, 30, 99, 0.9)',
-                    pointBorderWidth: 1
-                    },*/
-                    {
+                }, {
                     label: "Resultado Médio",
-                    data: calcularProducaoMedia(result.deadline, result.quantity),
+                    data: calcularProducaoMedia(result.deadline, result.quantity, result.histories),
                     borderColor: 'rgba(50, 50, 50, 0.75)',
                     backgroundColor: 'rgba(50, 50, 50, 0.3)',
                     pointBorderColor: 'rgba(50, 50, 50, 0)',
