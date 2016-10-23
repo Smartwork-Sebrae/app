@@ -799,7 +799,7 @@
             <!-- Widgets -->
             <div class="row clearfix">
                 <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
-                    <div class="info-box bg-indigo hover-expand-effect">
+                    <div class="info-box bg-indigo">
                         <div class="icon">
                             <i class="material-icons">show_chart</i>
                         </div>
@@ -810,7 +810,7 @@
                     </div>
                 </div>
                 <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
-                    <div class="info-box bg-blue hover-expand-effect">
+                    <div class="info-box bg-blue">
                         <div class="icon">
                             <i class="material-icons">playlist_add_check</i>
                         </div>
@@ -821,7 +821,7 @@
                     </div>
                 </div>
                 <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
-                    <div class="info-box bg-red hover-expand-effect">
+                    <div class="info-box bg-red">
                         <div class="icon">
                             <i class="material-icons">cancel</i>
                         </div>
@@ -838,7 +838,7 @@
             <div class="row clearfix">
                 <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12" ng-repeat="order in orders">
 
-                    <div class="info-box bg-light-green  hover-expand-effect" ng-if="order.status == 'working'">
+                    <div class="info-box bg-light-green" ng-if="order.status == 'working'">
                         <div class="icon">
                             <i class="material-icons">work</i>
                         </div>                  
@@ -848,7 +848,7 @@
                         </div>
                     </div>
 
-                    <div class="info-box bg-red hover-expand-effect" ng-if="order.status == 'idle'">
+                    <div class="info-box bg-red" ng-if="order.status == 'idle'">
                         <div class="icon">
                             <i class="material-icons">cancel</i>
                         </div>                    
