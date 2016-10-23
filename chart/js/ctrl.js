@@ -4,7 +4,7 @@ angular.module('myApp', ['angularMoment'])
     function startTime(){
         $http({
             method: 'GET',
-            url: 'http://smartwork-web.herokuapp.com/api/dashboard/'
+            url: 'http://smartwork-web.herokuapp.com/history/api/dashboard/'
         }).
         then(function successCallback(response) {
             $scope.retorno = response.data;
