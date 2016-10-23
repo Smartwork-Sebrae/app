@@ -10,28 +10,23 @@ angular.module('myApp', ['angularMoment'])
             $scope.retorno = response.data;
             
             for(var i = 0; i < response.data.desks.length; i++){
-                data = response.data.desks[i].start;    
-                var velho = moment(data); //data do obj recebido
-                var novo = moment(); // data do obj atual
-                var result = novo.diff(velho); // resultado da diferença de datas em milisegundos
-                response.data.desks[i].start = moment().millisecond(result).format('h:mm:ss'); // formatação da data
-
+                response.data.desks[i].start = diferenciarDatas(response.data.desks[i].start);
                 if(response.data.desks[i].finish != null){
-                    data = response.data.desks[i].finish;    
-                    var velho = moment(data); //data do obj recebido
-                    var novo = moment(); // data do obj atual
-                    var result = novo.diff(velho); // resultado da diferença de datas em milisegundos
-                    response.data.desks[i].finish = moment().millisecond(result).format('h:mm:ss'); // formatação da data
-
+                    response.data.desks[i].finish = diferenciarDatas(response.data.desks[i].finish);
                 }
             }
             $scope.orders = response.data.desks;
-        }, function errorCallback(response) {
-            console.error(response);
         });
         var t = setTimeout(function(){ startTime() }, 200);
     }
 	
+    
+    function diferenciarDatas(data){
+        var velho = moment(data); //data do obj recebido
+        var novo = moment(); // data do obj atual
+        var result = novo.diff(velho); // resultado da diferença de datas em milisegundos
+        return moment().millisecond(result).format('h:mm:ss'); // formatação da data
+    }
 })
 
 
