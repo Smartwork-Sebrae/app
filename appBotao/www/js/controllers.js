@@ -2,47 +2,6 @@ angular.module('starter.controllers', [])
 
 .controller('AppCtrl', function($scope, $ionicModal, $timeout) {
 
-  // With the new view caching in Ionic, Controllers are only called
-  // when they are recreated or on app start, instead of every page change.
-  // To listen for when this page is active (for example, to refresh data),
-  // listen for the $ionicView.enter event:
-  //$scope.$on('$ionicView.enter', function(e) {
-  //});
-
-  // Form data for the login modal
-  $scope.loginData = {};
-
-  // Create the login modal that we will use later
-  $ionicModal.fromTemplateUrl('templates/login.html', {
-    scope: $scope
-  }).then(function(modal) {
-    $scope.modal = modal;
-  });
-
-  // Triggered in the login modal to close it
-  $scope.closeLogin = function() {
-    $scope.modal.hide();
-  };
-
-  // Open the login modal
-  $scope.login = function() {
-    $scope.modal.show();
-  };
-
-  // Perform the login action when the user submits the login form
-  $scope.doLogin = function() {
-    console.log('Doing login', $scope.loginData);
-
-    // Simulate a login delay. Remove this and replace with your login
-    // code if using a login system
-    $timeout(function() {
-      $scope.closeLogin();
-    }, 1000);
-  };
-})
-
-.controller('PlaylistsCtrl', function($scope) {
-
 })
 
 .controller('Mesa', function($scope) {
@@ -57,27 +16,44 @@ angular.module('starter.controllers', [])
 
 })
 
-.controller('Cronometro', function($scope) {
+.controller('Cronometro', function($scope, $http) {
   var cont = true;
   $scope.msg = "Iniciar produção";
   var botao = document.getElementById('botao');
 
   $scope.contar = function () {
     if(cont){
-      cont = !cont;
-      $scope.msg = "Parar Produção";
-      botao.style.backgroundColor =  "#af504c";
-      botao.style.boxShadow = "0 5px #666";
-      botao.style.transform = "translateY(4px)";
-      inicio ();
+      $http({
+        method: "POST", 
+        url: "http://smartwork-web.herokuapp.com/history/api/start/1/"}).
+        then(function(response) {
+          cont = !cont;
+          $scope.msg = "Parar Produção";
+          botao.style.backgroundColor =  "#af504c";
+          botao.style.boxShadow = "0 5px #666";
+          botao.style.transform = "translateY(4px)";
+          inicio();
+          console.log(response.data);
+        }, function(response) {
+          console.error(response.data);
+      });
       
     } else {
-      cont = !cont;
-      $scope.msg = "Iniciar Produção";
-      botao.style.backgroundColor =  "#4CAF50";
-      botao.style.boxShadow = "0 9px #999";
-      botao.style.transform = "translateY(0px)";
-      reinicio();
+      
+      $http({
+        method: "POST", 
+        url: "http://smartwork-web.herokuapp.com/history/api/finish/1/"}).
+        then(function(response) {
+          cont = !cont;
+          $scope.msg = "Iniciar Produção";
+          botao.style.backgroundColor =  "#4CAF50";
+          botao.style.boxShadow = "0 9px #999";
+          botao.style.transform = "translateY(0px)";
+          reinicio();
+          console.log(response.data);
+        }, function(response) {
+          console.error(response.data);
+      });
     }
   }
     
@@ -133,7 +109,4 @@ angular.module('starter.controllers', [])
     }
   }
 
-})
-
-.controller('PlaylistCtrl', function($scope, $stateParams) {
 });
